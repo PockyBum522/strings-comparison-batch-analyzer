@@ -11,6 +11,8 @@
 
 : For checking for internet
 
+@echo off
+
 ping -n 2 -w 700 8.8.8.8 | find "TTL="
 
 IF %ERRORLEVEL% EQU 0 (
@@ -46,28 +48,24 @@ if "%1" neq "ELEV" (
 	
     "C:\Program Files\dotnet\dotnet.exe" restore "%~dp0StringsComparisonBatchAnalyzer\StringsComparisonBatchAnalyzer.sln"
 	
-    pause
-
 	"C:\Program Files\dotnet\dotnet.exe" build "%~dp0StringsComparisonBatchAnalyzer\StringsComparisonBatchAnalyzer.sln"
-
-    pause
 
 	echo .
 	echo Running: "%~dp0StringsComparisonBatchAnalyzer\StringsComparisonBatchAnalyzer.Main\bin\x64\Debug\net7.0-windows\StringsComparisonBatchAnalyzer.Main.exe"
     echo .
 	
-
-    pause
-
-	"%~dp0StringsComparisonBatchAnalyzer\StringsComparisonBatchAnalyzer.Main\bin\x64\Debug\net7.0-windows\StringsComparisonBatchAnalyzer.Main.exe"
+	start "" "%~dp0StringsComparisonBatchAnalyzer\StringsComparisonBatchAnalyzer.Main\bin\x64\Debug\net7.0-windows\StringsComparisonBatchAnalyzer.Main.exe"
 	
-    pause
-
-	echo.
+    echo.
     echo Finished configuring this computer.
 	echo.
-	
-    pause
+
+    echo.
+    echo Closing in 3 seconds...
+	echo.
+
+    
+	TIMEOUT /T 3
     
     exit 0
 
