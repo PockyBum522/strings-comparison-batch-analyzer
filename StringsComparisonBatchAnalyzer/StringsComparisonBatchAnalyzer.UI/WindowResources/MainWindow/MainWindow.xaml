@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
-        xmlns:mainWindow="clr-namespace:StringsComparisonBatchAnalyzer.UI.WindowResources.MainWindow"
-        d:DataContext="{d:DesignInstance Type=mainWindow:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        xmlns:mainWindow1="clr-namespace:StringsComparisonBatchAnalyzer.UI.WindowResources.MainWindow;assembly=StringsComparisonBatchAnalyzer.Core"
+        d:DataContext="{d:DesignInstance Type=mainWindow1:MainWindowViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
-        Title="MainWindow" Height="300" Width="700"
+        Title="MainWindow" Height="850" Width="700"
         Background="#222222">
     
     <Grid Margin="10">
@@ -16,11 +16,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
         
         <Grid.Resources>
             <Style TargetType="{x:Type StackPanel}">
@@ -56,13 +57,29 @@
         </Grid.Resources>
         
         <DockPanel Grid.Row="1" Grid.Column="0">
-            <TextBlock DockPanel.Dock="Top" Text="Path to Folder:"/>
-            <Button DockPanel.Dock="Right" Content="Browse" Margin="0,5,10,0" Width="100" Height="30" />       
-            <TextBox Margin="0,5,10,0" Height="30"/>
+            <TextBlock DockPanel.Dock="Top" Text="Path to folder with DLLs to analyze:"/>
+            <Button DockPanel.Dock="Right" Content="Browse" Command="{Binding PromptUserForDllsFolderCommand}" Margin="0,5,10,0" Width="100" Height="30" />       
+            <TextBox Text="{Binding CurrentFolderPathForDllsToAnalyze}" Margin="0,5,10,0" Height="30"/>
         </DockPanel>
         
-        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-            <Button Content="Run Batch" Margin="0,5,0,0" Width="100" Height="40" />
+        <DockPanel Grid.Row="2" Grid.Column="0" Margin="0,20,0,0">
+            <TextBlock DockPanel.Dock="Top" Text="Path to reports output folder:"/>
+            <Button DockPanel.Dock="Right" Content="Browse" Command="{Binding PromptUserForOutputFolderCommand}" Margin="0,5,10,0" Width="100" Height="30" />       
+            <TextBox Text="{Binding ReportsOutputFolderPath}" Margin="0,5,10,0" Height="30"/>
+        </DockPanel>
+        
+        
+        <DockPanel Grid.Row="3" Grid.Column="0" Margin="0,20,0,0">
+            <TextBlock DockPanel.Dock="Top" Text="Current status:"/>
+
+            <TextBox Text="{Binding ApplicationStatusLog}" 
+                     Margin="0,5,10,0" 
+                     Height="500"
+                     VerticalScrollBarVisibility="Visible" />
+        </DockPanel>
+        
+        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+            <Button Content="Run Batch" Command="{Binding RunBatchOnFolderCommand}" Margin="0,5,0,0" Width="100" Height="40" />
         </StackPanel>
         
     </Grid>

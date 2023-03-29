@@ -4,10 +4,13 @@ using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Threading;
 using Autofac;
+using Config.Net;
 using JetBrains.Annotations;
 using Serilog;
 using StringsComparisonBatchAnalyzer.Core;
+using StringsComparisonBatchAnalyzer.Core.Logic;
 using StringsComparisonBatchAnalyzer.Core.Logic.Application;
+using StringsComparisonBatchAnalyzer.Core.Models.Configuration;
 using StringsComparisonBatchAnalyzer.UI.WindowResources.MainWindow;
 
 namespace StringsComparisonBatchAnalyzer.Main;
@@ -22,7 +25,7 @@ public class DiContainerBuilder
     private readonly ContainerBuilder _builder = new ();
     private ILogger? _logger;
     
-    //private ISettingsApplicationLocal _settingsApplicationLocal;
+    private ISettingsApplicationLocal _settingsApplicationLocal;
 
     /// <summary>
     /// Gets a built container with all local application and TeakTools.Common dependencies in it
@@ -84,32 +87,20 @@ public class DiContainerBuilder
     }
     private void RegisterApplicationConfiguration()
     {
-        // _settingsApplicationLocal = 
-        //     new ConfigurationBuilder<ISettingsApplicationLocal>()
-        //         .UseIniFile(ApplicationPaths.PathSettingsApplicationLocalIniFile)
-        //         .Build();
-        //
-        // _builder.RegisterInstance(_settingsApplicationLocal).As<ISettingsApplicationLocal>().SingleInstance();
-        //
-        // SetupAnyBlankConfigurationPropertiesAsDefaults();
-    }
-
-    private void SetupAnyBlankConfigurationPropertiesAsDefaults()
-    {
-        // if (string.IsNullOrWhiteSpace(_settingsApplicationLocal.AdobeReaderExecutablePath))
-        //     _settingsApplicationLocal.AdobeReaderExecutablePath = @"C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe";
-        //
-        // if (string.IsNullOrWhiteSpace(_settingsApplicationLocal.FoxitReaderExecutablePath))
-        //     _settingsApplicationLocal.FoxitReaderExecutablePath = @"C:\Program Files (x86)\FoxitReader Basic\FoxitPDFReader.exe";
+        _settingsApplicationLocal = 
+            new ConfigurationBuilder<ISettingsApplicationLocal>()
+                .UseIniFile(ApplicationPaths.PathSettingsApplicationLocalIniFile)
+                .Build();
+        
+        _builder.RegisterInstance(_settingsApplicationLocal).As<ISettingsApplicationLocal>().SingleInstance();
     }
 
     [SupportedOSPlatform("Windows7.0")]
     private void RegisterMainDependencies()
     {
         _builder.RegisterType<ExceptionHandler>().AsSelf().SingleInstance();
-        _builder.RegisterType<StartupScriptWriter>().AsSelf().SingleInstance();
-        _builder.RegisterType<SystemRebooter>().AsSelf().SingleInstance();
-        _builder.RegisterType<FinalCleanupHelper>().AsSelf().SingleInstance();
+        
+        _builder.RegisterType<DllAnalyzerEngine>().AsSelf();
     }
     
     [SupportedOSPlatform("Windows7.0")]
