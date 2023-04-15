@@ -28,12 +28,22 @@ public class DllFileToAnalyze
     /// <summary>
     /// The results of the strings64 run. Will be empty until task completes.
     /// </summary>
-    public string Strings64Results { get; set; } = "";
+    public string[] Strings64Results { get; set; } = { "" };
+
+    /// <summary>
+    /// The results of the Detect-It-Easy run. Will be empty until task completes.
+    /// </summary>
+    public string DetectItEasyResults { get; set; } = "";
     
     /// <summary>
     /// Task that is running strings64.exe in a shell on the DLL
     /// </summary>
     public Task<string> RunStrings64OnFileTask { get; set; } 
+    
+    /// <summary>
+    /// Task that is running Detect-It-Easy in a shell on the DLL
+    /// </summary>
+    public Task<string> RunDetectItEasyOnFileTask { get; set; } 
 
     private string GetHash()
     {

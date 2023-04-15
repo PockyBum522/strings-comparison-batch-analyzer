@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
         xmlns:mainWindow1="clr-namespace:StringsComparisonBatchAnalyzer.UI.WindowResources.MainWindow;assembly=StringsComparisonBatchAnalyzer.Core"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:global="clr-namespace:"
         d:DataContext="{d:DesignInstance Type=mainWindow1:MainWindowViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Style="{StaticResource StandardWindow}"
@@ -75,7 +77,12 @@
             <TextBox Text="{Binding ApplicationStatusLog}" 
                      Margin="0,5,10,0" 
                      Height="500"
-                     VerticalScrollBarVisibility="Visible" />
+                     VerticalScrollBarVisibility="Visible" >
+                
+                <b:Interaction.Behaviors>
+                    <global:TextBoxAutoScrollToEndBehavior />
+                </b:Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
